@@ -7,8 +7,6 @@ import {
 import { Branch } from '../models/branch'
 import { TipState } from '../models/tip'
 import { clamp } from './clamp'
-import { Repository } from '../models/repository'
-import { getCurrentProgress } from './git'
 
 export const initializeNewRebaseFlow = (state: IRepositoryState) => {
   const {
@@ -38,19 +36,15 @@ export const initializeNewRebaseFlow = (state: IRepositoryState) => {
   return initialState
 }
 
-export const initializeRebaseFlowForConflictedRepository = async (
-  repository: Repository,
+export const initializeRebaseFlowForConflictedRepository = (
   conflictState: RebaseConflictState
-): Promise<ShowConflictsStep> => {
+): ShowConflictsStep => {
   const { targetBranch, baseBranch } = conflictState
-
-  const previousProgress = await getCurrentProgress(repository)
 
   const initialState: ShowConflictsStep = {
     kind: RebaseStep.ShowConflicts,
     targetBranch,
     baseBranch,
-    previousProgress,
   }
 
   return initialState
